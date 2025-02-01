@@ -87,14 +87,24 @@
         font-size: 1.5em;
         animation: heartFloat 5s linear infinite;
       }
+
+      .message {
+        display: none;
+        font-size: 2em;
+        margin-top: 20px;
+        color: darkred;
+      }
     </style>
   </head>
   <body>
     <div class="banner">💘 Be My Valentine! 💘</div>
     <div class="question">Will you be my Valentine? 💖</div>
     <div class="buttons">
-      <button id="yes" onclick="alert('Yay! ❤️')">Yes</button>
+      <button id="yes">Yes</button>
       <button id="no">No</button>
+    </div>
+    <div class="message" id="funny-message">
+      You are now contractually obligated to buy me chocolates! 🍫😂
     </div>
 
     <audio id="background-audio" loop>
@@ -102,6 +112,9 @@
     </audio>
     <audio id="no-audio">
       <source src="babu2.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="yes-audio" loop>
+      <source src="laugh.mp3" type="audio/mpeg" />
     </audio>
 
     <!-- Attribution -->
@@ -111,8 +124,11 @@
 
     <script>
       const noButton = document.getElementById("no");
+      const yesButton = document.getElementById("yes");
       const backgroundAudio = document.getElementById("background-audio");
       const noAudio = document.getElementById("no-audio");
+      const yesAudio = document.getElementById("yes-audio");
+      const funnyMessage = document.getElementById("funny-message");
 
       // Start background audio on first user interaction
       document.addEventListener(
@@ -145,6 +161,15 @@
 
       noButton.addEventListener("mouseenter", moveButton);
       noButton.addEventListener("touchstart", moveButton);
+
+      yesButton.addEventListener("click", () => {
+        backgroundAudio.pause();
+        noAudio.pause();
+        yesAudio.play().catch((error) => {
+          console.log("Error playing yes-audio: ", error);
+        });
+        funnyMessage.style.display = "block";
+      });
 
       // Generate Floating Hearts
       function createHeart() {
